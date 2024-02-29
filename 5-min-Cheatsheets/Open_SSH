@@ -1,1 +1,114 @@
+1) To check SSH is installed on the system.
+apt search openssh-client 
+
+Now open the command line and type in the commands in the shell.
+
+ssh root(username) @ip-address
+#add password
+cd ~/.ssh
+ls
+#goes to ssh file directory
+
+2)CONFIGURING OPEN SSH CLIENTS
+cd ~/.ssh
+ls
+#create file
+touch config
+#open and edit 
+nano config
+
+#Type the following IN CONFIG FILE
+Host server-name
+    Hostname ip-address
+    Port 22
+    User username
+#Now save the file
+#now we can use server-name to connect to server
+ssh server-name
+
+3)USING PUBLIC/PRIVATE KEYS
+ssh-keygen #to create a key 
+cat id_rsa # never show this THIS IS PRIVATE KEY
+cat id_rsa.pub #PUBLIC KEY 
+
+#to delete keys
+rm id_rsa*
+
+#to recreate keys
+ssh-keygen
+
+4)#SETTING UP SERVER
+4.1) LONG WAY
+cat id_rsa.pub 
+#copy to server
+ssh server-name @ip-address
+#SETUP SERVER TO ADD CONNECTIONS 
+cd .ssh (No such file or directory)
+#Now create ssh folder
+pwd
+mkdir.ssh  (Makes dir )
+ls-la
+ls
+#create a file authorized_keys
+nano authorized_keys
+
+#IN authorized_keys file
+PASTE PUBLIC KEY OF THE ID_RSA.PUB file
+#save
+
+FROM NEXT TIME IT DOESN'T ASK FOR PASSWORD WHILE CONNECTING
+
+#to find more info 
+ssh -v server-name@ip-address
+
+4.2) SHORT WAY
+ssh server-name@ip-address
+cd .ssh (NO file or direcctory)
+ #COMMAND FOR COPYING KEYS TO REMOTE SERVERS
+ssh-copy-id -i input-dir username@ip-address
+Ex:) ssh-copy-id -i ~/.ssh./id_rsa.pub root@172.105.7.26
+
+5)#MANAGING SSH KEYS
+
+#CREATE DIFF TYPE OF KEY 
+ssh-keygen -t ed25519(type of key) -C"comment"
+cat id_ed25519.pub
+
+#TO USE SSH AGENT TO AVOID TYPING PASSWORD EVERYTIME
+#TO START SSH AGENT
+eval "$(ssh-agent)"
+ps aux |grep ssh-agent
+#TO ADD KEY TO SSH AGENT
+ssh-add ~/.ssh/id_ec25519
+#ENTER PASSKEY 
+#KEY ADDED
+
+6)#CONFIGURING OpenSSH
+
+#SERVER COMPONENT
+#sshd-> server component
+which sshd
+systemctl status sshd(status)
+systemctl restart sshd(restart)
+systemctl stop sshd(stop)
+systemctl start sshd(start)
+
+cd /etc/ssh
+ls -l
+#sshd_config file is what changed to whatever to configure
+nano sshd_config
+#scroll down and DISABLE PASSWORDAUTHENTICATION TO NO
+#change port number to avoid random online attacks
+ssh -p 2222 server-name@ip-address
+
+7)#TROUBLESHOOTING OpenSSH
+
+1)CHECK PERMISSIONS 
+2)LOG FILES
+#check log files using journal built-in 
+journal -u ssh
+
+
+
+
 
