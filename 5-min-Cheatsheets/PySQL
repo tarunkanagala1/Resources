@@ -1,0 +1,64 @@
+1) First install the package using 
+pip install mysql-connector-python
+2) Then import then package and add the connect your database
+import mysql.connector
+mydb=  mysql.connector.connect(
+host="",
+user="",
+password="",
+database=""
+)
+mycursor=mydb.cursor()
+
+TYPES OF OPERATIONS
+1)CREATE
+mycursor.execute("CREATE TABLE customers (name VARCHAR(255), address VARCHAR(255))")
+
+2)INSERTION
+sql= "INSERT INTO db_name(name,address) VALUES(%s,%s)"
+val=("","")
+3)SELECTION
+sql = "SELECT * FROM customers WHERE address ='Park Lane 38'"
+mycursor.execute(sql,val)
+4) WHERE CLAUSE
+sql = "SELECT * FROM customers WHERE address LIKE '%way%'"
+sql = "SELECT * FROM customers WHERE address = %s"
+5)ORDER BY
+sql = "SELECT * FROM customers ORDER BY name"
+sql = "SELECT * FROM customers ORDER BY name DESC"
+6)DELETE
+sql = "DELETE FROM customers WHERE address = 'Mountain 21'"
+7)TO DROP
+sql = "DROP TABLE customers"
+sql = "DROP TABLE IF EXISTS customers"
+
+8)UPDATE
+sql = "UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'"
+9) LIMIT CLAUSE
+mycursor.executemany(sql, val)
+mycursor.execute("SELECT * FROM customers LIMIT 5")
+mycursor.execute("SELECT * FROM customers")
+mycursor.execute("SELECT * FROM customers LIMIT 5 OFFSET 2")
+
+
+10) JOIN/INNER JOIN
+
+sql = "SELECT \
+  users.name AS user, \
+  products.name AS favorite \
+  FROM users \
+  INNER/RIGHT/LEFT JOIN products ON users.fav = products.id"
+
+
+
+mydb.commit() #important to make update to  takes place
+
+
+mycursor = mydb.cursor()
+
+
+myresult = mycursor.fetchall()
+myresult = mycursor.fetchone()
+
+for x in myresult:
+  print(x)
